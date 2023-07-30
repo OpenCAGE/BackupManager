@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelBackup", "LevelBackup\LevelBackup.csproj", "{F14A2B61-7B87-463F-B708-EDA1ABD5657F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{215345A0-B09C-4221-BB6D-0DB2827011E0} = {215345A0-B09C-4221-BB6D-0DB2827011E0}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CathodeLib", "..\..\AlienConfigEditor\CathodeLib\CathodeLib\CathodeLib.csproj", "{215345A0-B09C-4221-BB6D-0DB2827011E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{F14A2B61-7B87-463F-B708-EDA1ABD5657F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14A2B61-7B87-463F-B708-EDA1ABD5657F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14A2B61-7B87-463F-B708-EDA1ABD5657F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{215345A0-B09C-4221-BB6D-0DB2827011E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{215345A0-B09C-4221-BB6D-0DB2827011E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{215345A0-B09C-4221-BB6D-0DB2827011E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{215345A0-B09C-4221-BB6D-0DB2827011E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
