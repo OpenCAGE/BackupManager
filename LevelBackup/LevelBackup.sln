@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelBackup", "LevelBackup\LevelBackup.csproj", "{F14A2B61-7B87-463F-B708-EDA1ABD5657F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F14A2B61-7B87-463F-B708-EDA1ABD5657F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14A2B61-7B87-463F-B708-EDA1ABD5657F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14A2B61-7B87-463F-B708-EDA1ABD5657F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14A2B61-7B87-463F-B708-EDA1ABD5657F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1E86866-E1B9-42A9-AAD5-D501C7B84220}
+	EndGlobalSection
+EndGlobal
