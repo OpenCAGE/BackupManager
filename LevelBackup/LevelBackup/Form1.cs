@@ -1,4 +1,5 @@
 ﻿using CathodeLib;
+using OpenCAGE;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,7 @@ namespace LevelBackup
         public Form1()
         {
             InitializeComponent();
-            //levelList.Items.AddRange(Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray());
+            levelList.Items.AddRange(Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray());
 
             // Backups are not complete copies of the level.
             // When you make a backup, it generates hashes for all files in the level.
