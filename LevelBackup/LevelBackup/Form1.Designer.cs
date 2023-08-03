@@ -29,61 +29,65 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.saveList = new System.Windows.Forms.CheckedListBox();
+            this.deleteSelectedBackups = new System.Windows.Forms.Button();
+            this.removeSelectedBackup = new System.Windows.Forms.Button();
+            this.selectAll = new System.Windows.Forms.Button();
+            this.deselectAll = new System.Windows.Forms.Button();
             this.levelList = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
+            this.backupName = new System.Windows.Forms.TextBox();
+            this.saveBackup = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // checkedListBox1
+            // saveList
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 52);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(878, 424);
-            this.checkedListBox1.TabIndex = 0;
+            this.saveList.FormattingEnabled = true;
+            this.saveList.Location = new System.Drawing.Point(12, 52);
+            this.saveList.Name = "saveList";
+            this.saveList.Size = new System.Drawing.Size(878, 424);
+            this.saveList.TabIndex = 0;
             // 
-            // button1
+            // deleteSelectedBackups
             // 
-            this.button1.Location = new System.Drawing.Point(710, 482);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(180, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Delete Selected Backups";
-            this.button1.UseVisualStyleBackColor = true;
+            this.deleteSelectedBackups.Location = new System.Drawing.Point(710, 482);
+            this.deleteSelectedBackups.Name = "deleteSelectedBackups";
+            this.deleteSelectedBackups.Size = new System.Drawing.Size(180, 23);
+            this.deleteSelectedBackups.TabIndex = 1;
+            this.deleteSelectedBackups.Text = "Delete Checked Backups";
+            this.deleteSelectedBackups.UseVisualStyleBackColor = true;
+            this.deleteSelectedBackups.Click += new System.EventHandler(this.deleteSelectedBackups_Click);
             // 
-            // button2
+            // removeSelectedBackup
             // 
-            this.button2.Location = new System.Drawing.Point(524, 482);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(180, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Restore Selected Backup";
-            this.button2.UseVisualStyleBackColor = true;
+            this.removeSelectedBackup.Location = new System.Drawing.Point(524, 482);
+            this.removeSelectedBackup.Name = "removeSelectedBackup";
+            this.removeSelectedBackup.Size = new System.Drawing.Size(180, 23);
+            this.removeSelectedBackup.TabIndex = 2;
+            this.removeSelectedBackup.Text = "Restore Checked Backup";
+            this.removeSelectedBackup.UseVisualStyleBackColor = true;
+            this.removeSelectedBackup.Click += new System.EventHandler(this.restoreSelectedBackup);
             // 
-            // button3
+            // selectAll
             // 
-            this.button3.Location = new System.Drawing.Point(12, 482);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(83, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Select All";
-            this.button3.UseVisualStyleBackColor = true;
+            this.selectAll.Location = new System.Drawing.Point(12, 482);
+            this.selectAll.Name = "selectAll";
+            this.selectAll.Size = new System.Drawing.Size(83, 23);
+            this.selectAll.TabIndex = 3;
+            this.selectAll.Text = "Check All";
+            this.selectAll.UseVisualStyleBackColor = true;
+            this.selectAll.Click += new System.EventHandler(this.selectAll_Click);
             // 
-            // button4
+            // deselectAll
             // 
-            this.button4.Location = new System.Drawing.Point(101, 482);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(83, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Deselect All";
-            this.button4.UseVisualStyleBackColor = true;
+            this.deselectAll.Location = new System.Drawing.Point(101, 482);
+            this.deselectAll.Name = "deselectAll";
+            this.deselectAll.Size = new System.Drawing.Size(83, 23);
+            this.deselectAll.TabIndex = 4;
+            this.deselectAll.Text = "Un-Check All";
+            this.deselectAll.UseVisualStyleBackColor = true;
+            this.deselectAll.Click += new System.EventHandler(this.deselectAll_Click);
             // 
             // levelList
             // 
@@ -93,22 +97,24 @@
             this.levelList.Name = "levelList";
             this.levelList.Size = new System.Drawing.Size(342, 21);
             this.levelList.TabIndex = 5;
+            this.levelList.SelectedIndexChanged += new System.EventHandler(this.levelList_SelectedIndexChanged);
             // 
-            // textBox1
+            // backupName
             // 
-            this.textBox1.Location = new System.Drawing.Point(505, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(269, 20);
-            this.textBox1.TabIndex = 6;
+            this.backupName.Location = new System.Drawing.Point(505, 25);
+            this.backupName.Name = "backupName";
+            this.backupName.Size = new System.Drawing.Size(269, 20);
+            this.backupName.TabIndex = 6;
             // 
-            // button5
+            // saveBackup
             // 
-            this.button5.Location = new System.Drawing.Point(780, 23);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(111, 23);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Backup Now";
-            this.button5.UseVisualStyleBackColor = true;
+            this.saveBackup.Location = new System.Drawing.Point(780, 23);
+            this.saveBackup.Name = "saveBackup";
+            this.saveBackup.Size = new System.Drawing.Size(111, 23);
+            this.saveBackup.TabIndex = 7;
+            this.saveBackup.Text = "Backup Now";
+            this.saveBackup.UseVisualStyleBackColor = true;
+            this.saveBackup.Click += new System.EventHandler(this.saveBackup_Click);
             // 
             // label1
             // 
@@ -135,14 +141,14 @@
             this.ClientSize = new System.Drawing.Size(903, 514);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.saveBackup);
+            this.Controls.Add(this.backupName);
             this.Controls.Add(this.levelList);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.deselectAll);
+            this.Controls.Add(this.selectAll);
+            this.Controls.Add(this.removeSelectedBackup);
+            this.Controls.Add(this.deleteSelectedBackups);
+            this.Controls.Add(this.saveList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -156,14 +162,14 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckedListBox saveList;
+        private System.Windows.Forms.Button deleteSelectedBackups;
+        private System.Windows.Forms.Button removeSelectedBackup;
+        private System.Windows.Forms.Button selectAll;
+        private System.Windows.Forms.Button deselectAll;
         private System.Windows.Forms.ComboBox levelList;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox backupName;
+        private System.Windows.Forms.Button saveBackup;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
     }
