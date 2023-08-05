@@ -5,21 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Security.Cryptography;
+using System.Windows.Forms.Design;
+using OpenCAGE;
 
 namespace LevelBackup
 {
     public class AlienLevel
     {
-        private List<AlienBackup> Backups = new List<AlienBackup>();
+        public List<AlienBackup> Backups = new List<AlienBackup>();
         private List<AlienFile> Files = new List<AlienFile>();
 
         private string LevelFolder;
         private string BackupFile;
 
-        public AlienLevel(string pathToLevelFolder, string pathToBackupFile)
+        public AlienLevel(string level)
         {
-            LevelFolder = pathToLevelFolder;
-            BackupFile = pathToBackupFile;
+            LevelFolder = SettingsManager.GetString("PATH_GameRoot") + "/DATA/ENV/PRODUCTION/" + level + "/";
+            BackupFile = SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS/" + level + ".BAK";
 
             Load();
         }
@@ -52,13 +54,42 @@ namespace LevelBackup
                 Backup.GUIDs.Add(fileHash);
             }
 
+            Backups.Add(Backup);
             Save();
         }
 
         /* Delete an existing backup */
         public void DeleteBackup(string name)
         {
-            //TODO: delete our backup object, then go through and delete files within the files array if their GUIDs are no longer referenced by any backups.
+            Backups.Remove(Backups.FirstOrDefault(o => o.Name == name));
+
+            //TODO: currently this is NOT working. it deletes all files?
+
+            List<AlienFile> trimmedFiles = new List<AlienFile>();
+            for (int i = 0; i < Files.Count; i++)
+            {
+                List<AlienFile.Revision> trimmedRevisions = new List<AlienFile.Revision>();
+                for (int x = 0; x < Files[i].Revisions.Count; x++)
+                {
+                    bool used = false;
+                    for (int y = 0; y < Backups.Count; y++)
+                    {
+                        if (Backups[y].GUIDs.Contains(Files[i].Revisions[x].GUID))
+                        {
+                            used = true;
+                            break;
+                        }
+                    }
+                    if (!used) continue;
+                    trimmedRevisions.Add(Files[i].Revisions[x]);
+                }
+                if (trimmedRevisions.Count == 0) continue;
+                Files[i].Revisions = trimmedRevisions;
+                trimmedFiles.Add(Files[i]);
+            }
+
+            Files = trimmedFiles;
+            Save();
         }
 
         /* Load the backup archive into memory */
@@ -68,8 +99,6 @@ namespace LevelBackup
 
             using (BinaryReader reader = new BinaryReader(File.OpenRead(BackupFile)))
             {
-                reader.BaseStream.SetLength(0);
-
                 int backupCount = reader.ReadInt32();
                 for (int i = 0; i < backupCount; i++)
                 {
@@ -113,7 +142,7 @@ namespace LevelBackup
                     writer.Write(Backups[i].GUIDs.Count);
                     for (int x = 0; x < Backups[i].GUIDs.Count; x++)
                     {
-                        writer.Write(Backups[i].GUIDs[i]);
+                        writer.Write(Backups[i].GUIDs[x]);
                     }
                 }
 
@@ -124,9 +153,9 @@ namespace LevelBackup
                     writer.Write(Files[i].Revisions.Count);
                     for (int x = 0; x < Files[i].Revisions.Count; x++)
                     {
-                        writer.Write(Files[i].Revisions[i].GUID);
-                        writer.Write(Files[i].Revisions[i].Content.Length);
-                        writer.Write(Files[i].Revisions[i].Content);
+                        writer.Write(Files[i].Revisions[x].GUID);
+                        writer.Write(Files[i].Revisions[x].Content.Length);
+                        writer.Write(Files[i].Revisions[x].Content);
                     }
                 }
             }
@@ -143,7 +172,7 @@ namespace LevelBackup
         }
 
 
-        private class AlienBackup
+        public class AlienBackup
         {
             public string Name;
             public string Date;

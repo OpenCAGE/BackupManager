@@ -1,4 +1,4 @@
-﻿using CathodeLib;
+using CathodeLib;
 using Newtonsoft.Json.Linq;
 using OpenCAGE;
 using System;
@@ -17,25 +17,18 @@ namespace LevelBackup
 {
     public partial class Form1 : Form
     {
-        string backupFolder = "/DATA/MODTOOLS/LEVEL_BACKUPS/";
-        const string manifestFile = "/manifest.json";
-        JObject manifest;
+        AlienLevel level = null;
 
         public Form1()
         {
             InitializeComponent();
 
-            backupFolder = SettingsManager.GetString("PATH_GameRoot") + backupFolder;
-            string[] levels = Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray();
-            for (int i = 0; i < levels.Length; i++)
-            {
-                Directory.CreateDirectory(backupFolder + levels[i]);
-                levelList.Items.Add(levels[i]);
-            }
+            Directory.CreateDirectory(SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS/");
+
+            levelList.Items.AddRange(Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray());
             levelList.SelectedIndex = 0;
 
-            for (int i = 0; i < 9; i++)
-                saveList.Items.Add(i.ToString());
+            RefreshList();
 
             // Backups are not complete copies of the level.
             // When you make a backup, it generates hashes for all files in the level.
@@ -47,35 +40,23 @@ namespace LevelBackup
             // If they're not, we can delete the saved modified file.
         }
 
-        /* Populate save list with saves from selected level */
-        private void levelList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string manifestPath = backupFolder + levelList.SelectedItem + manifestFile;
-            manifest = File.Exists(manifestPath) ? JObject.Parse(File.ReadAllText(manifestPath)) : new JObject("{\"backups\":[]}");
-            RefreshList();
-        }
         private void RefreshList()
         {
             saveList.Items.Clear();
-            for (int i = 0; i < ((JArray)manifest["backups"]).Count; i++)
-                saveList.Items.Add(manifest["backups"][i]["backup_name"]);
+            for (int i = 0; i < level.Backups.Count; i++)
+                saveList.Items.Add(level.Backups[i].Name);
         }
 
-        /* Save a backup for the selected level */
+        private void levelList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            level = new AlienLevel(levelList.SelectedItem.ToString());
+            RefreshList();
+        }
+
         private void saveBackup_Click(object sender, EventArgs e)
         {
-
-            SaveManifest();
-        }
-        private void SaveManifest()
-        {
-            JArray backups = new JArray();
-            for (int i = 0; i < saveList.Items.Count; i++)
-            {
-                backups.Add("");
-            }
-            manifest["backups"] = backups;
-            File.WriteAllText(backupFolder + levelList.SelectedItem + manifestFile, manifest.ToString(Newtonsoft.Json.Formatting.Indented));
+            level.CreateBackup(backupName.Text);
+            RefreshList();
         }
 
         /* Select/de-select all items in the save list */
@@ -99,7 +80,9 @@ namespace LevelBackup
         /* Delete the selected backups for the selected level */
         private void deleteSelectedBackups_Click(object sender, EventArgs e)
         {
-
+            for (int i = 0; i < saveList.CheckedItems.Count; i++)
+                level.DeleteBackup(saveList.CheckedItems[i].ToString());
+            RefreshList();
         }
     }
 }
