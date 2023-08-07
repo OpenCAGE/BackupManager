@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LevelBackup")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenCAGE Level Backup Manager")]
+[assembly: AssemblyDescription("Level backup manager for OpenCAGE, to use with Alien: Isolation.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LevelBackup")]
-[assembly: AssemblyCopyright("Copyright ©  2023")]
+[assembly: AssemblyProduct("OpenCAGE Level Backup Manager")]
+[assembly: AssemblyCopyright("Copyright © Matt Filer 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

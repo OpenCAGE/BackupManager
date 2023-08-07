@@ -18,6 +18,7 @@ namespace LevelBackup
         //TODO: change this to write the contents out to external files so we don't have to load everything every time 
 
         private string LevelFolder;
+        private string BackupFolder;
         private string BackupFile;
 
         private int Version = 1;
@@ -25,7 +26,10 @@ namespace LevelBackup
         public AlienLevel(string level)
         {
             LevelFolder = SettingsManager.GetString("PATH_GameRoot") + "/DATA/ENV/PRODUCTION/" + level;
-            BackupFile = SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS/" + level + ".BAK";
+            BackupFolder = SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS/" + level;
+            BackupFile = BackupFolder + ".BAK";
+
+            Directory.CreateDirectory(BackupFolder);
 
             Load();
         }
@@ -44,15 +48,15 @@ namespace LevelBackup
                 AlienFile file = Files.FirstOrDefault(o => o.Name == fileName);
                 if (file == null)
                 {
-                    file = new AlienFile() { Name = fileName, Revisions = new List<AlienFile.Revision>() };
+                    file = new AlienFile() { Name = fileName, Revisions = new List<string>() };
                     Files.Add(file);
                 }
 
-                AlienFile.Revision revision = file.Revisions.FirstOrDefault(o => o.GUID == fileHash);
-                if (revision == null)
+                string revisionFile = BackupFolder + "/" + fileHash;
+                if (!File.Exists(revisionFile))
                 {
-                    revision = new AlienFile.Revision() { GUID = fileHash, Content = File.ReadAllBytes(files[i]) };
-                    file.Revisions.Add(revision);
+                    File.WriteAllBytes(revisionFile, File.ReadAllBytes(files[i]));
+                    file.Revisions.Add(fileHash);
                 }
 
                 Backup.GUIDs.Add(fileHash);
@@ -108,10 +112,10 @@ namespace LevelBackup
                     {
                         for (int z = 0; z < backup.GUIDs.Count; z++)
                         {
-                            if (Files[i].Revisions[x].GUID == backup.GUIDs[z])
+                            if (Files[i].Revisions[x] == backup.GUIDs[z])
                             {
                                 Directory.CreateDirectory(LevelFolder + "/" + Files[i].Name.Substring(0, Files[i].Name.Length - Path.GetFileName(Files[i].Name).Length));
-                                File.WriteAllBytes(LevelFolder + "/" + Files[i].Name, Files[i].Revisions[x].Content);
+                                File.WriteAllBytes(LevelFolder + "/" + Files[i].Name, File.ReadAllBytes(BackupFolder + "/" + Files[i].Revisions[x]));
                             }
                         }
                     }
@@ -173,19 +177,24 @@ namespace LevelBackup
             List<AlienFile> trimmedFiles = new List<AlienFile>();
             for (int i = 0; i < Files.Count; i++)
             {
-                List<AlienFile.Revision> trimmedRevisions = new List<AlienFile.Revision>();
+                List<string> trimmedRevisions = new List<string>();
                 for (int x = 0; x < Files[i].Revisions.Count; x++)
                 {
                     bool used = false;
                     for (int y = 0; y < Backups.Count; y++)
                     {
-                        if (Backups[y].GUIDs.Contains(Files[i].Revisions[x].GUID))
+                        if (Backups[y].GUIDs.Contains(Files[i].Revisions[x]))
                         {
                             used = true;
                             break;
                         }
                     }
-                    if (!used) continue;
+                    if (!used)
+                    {
+                        if (File.Exists(BackupFolder + "/" + Files[i].Revisions[x]))
+                            File.Delete(BackupFolder + "/" + Files[i].Revisions[x]);
+                        continue;
+                    }
                     trimmedRevisions.Add(Files[i].Revisions[x]);
                 }
                 if (trimmedRevisions.Count == 0) continue;
@@ -224,13 +233,11 @@ namespace LevelBackup
                 int fileCount = reader.ReadInt32();
                 for (int i = 0; i < fileCount; i++)
                 {
-                    AlienFile file = new AlienFile() { Name = reader.ReadString(), Revisions = new List<AlienFile.Revision>() };
+                    AlienFile file = new AlienFile() { Name = reader.ReadString(), Revisions = new List<string>() };
                     int revisionCount = reader.ReadInt32();
                     for (int x = 0; x < revisionCount; x++)
                     {
-                        AlienFile.Revision revision = new AlienFile.Revision() { GUID = reader.ReadString() };
-                        int contentLength = reader.ReadInt32();
-                        revision.Content = reader.ReadBytes(contentLength);
+                        file.Revisions.Add(reader.ReadString());
                     }
                     Files.Add(file);
                 }
@@ -265,9 +272,7 @@ namespace LevelBackup
                     writer.Write(Files[i].Revisions.Count);
                     for (int x = 0; x < Files[i].Revisions.Count; x++)
                     {
-                        writer.Write(Files[i].Revisions[x].GUID);
-                        writer.Write(Files[i].Revisions[x].Content.Length);
-                        writer.Write(Files[i].Revisions[x].Content);
+                        writer.Write(Files[i].Revisions[x]);
                     }
                 }
             }
@@ -295,13 +300,7 @@ namespace LevelBackup
         private class AlienFile
         {
             public string Name;
-            public List<Revision> Revisions;
-
-            public class Revision
-            {
-                public string GUID;
-                public byte[] Content;
-            }
+            public List<string> Revisions;
         }
     }
 }

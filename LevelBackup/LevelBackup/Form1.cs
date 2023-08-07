@@ -24,8 +24,6 @@ namespace LevelBackup
         {
             InitializeComponent();
 
-            Directory.CreateDirectory(SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS/");
-
             levelList.Items.AddRange(Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray());
             levelList.SelectedIndex = 0;
 
@@ -47,8 +45,10 @@ namespace LevelBackup
 
         private void saveBackup_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             level.CreateBackup(backupName.Text);
             RefreshList();
+            this.Cursor = Cursors.Default;
         }
 
         /* Restore the selected backup for the selected level */
@@ -60,6 +60,7 @@ namespace LevelBackup
                 return;
             }
 
+            this.Cursor = Cursors.WaitCursor;
             if (MessageBox.Show("Is Alien: Isolation closed?\nAre all mod tools are closed?", "About to restore...", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 if (level.RestoreBackup(level.Backups[backupList.SelectedItems[0].Index].ID))
@@ -71,6 +72,7 @@ namespace LevelBackup
                     MessageBox.Show("Failed to restore backup!\nPlease close anything that may be using the files within the level, and try again.", "Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            this.Cursor = Cursors.Default;
         }
 
         /* Delete the selected backups for the selected level */
@@ -82,9 +84,11 @@ namespace LevelBackup
                 return;
             }
 
+            this.Cursor = Cursors.WaitCursor;
             for (int i = 0; i < backupList.SelectedItems.Count; i++)
                 level.DeleteBackup(level.Backups[backupList.SelectedItems[i].Index].ID);
             RefreshList();
+            this.Cursor = Cursors.Default;
         }
     }
 }
