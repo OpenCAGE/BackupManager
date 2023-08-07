@@ -29,25 +29,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.saveList = new System.Windows.Forms.CheckedListBox();
             this.deleteSelectedBackups = new System.Windows.Forms.Button();
             this.removeSelectedBackup = new System.Windows.Forms.Button();
-            this.selectAll = new System.Windows.Forms.Button();
-            this.deselectAll = new System.Windows.Forms.Button();
             this.levelList = new System.Windows.Forms.ComboBox();
             this.backupName = new System.Windows.Forms.TextBox();
             this.saveBackup = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.backupList = new System.Windows.Forms.ListView();
+            this.backupNames = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.backupDates = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
-            // 
-            // saveList
-            // 
-            this.saveList.FormattingEnabled = true;
-            this.saveList.Location = new System.Drawing.Point(12, 52);
-            this.saveList.Name = "saveList";
-            this.saveList.Size = new System.Drawing.Size(878, 424);
-            this.saveList.TabIndex = 0;
             // 
             // deleteSelectedBackups
             // 
@@ -55,7 +47,7 @@
             this.deleteSelectedBackups.Name = "deleteSelectedBackups";
             this.deleteSelectedBackups.Size = new System.Drawing.Size(180, 23);
             this.deleteSelectedBackups.TabIndex = 1;
-            this.deleteSelectedBackups.Text = "Delete Checked Backups";
+            this.deleteSelectedBackups.Text = "Delete Selected Backup";
             this.deleteSelectedBackups.UseVisualStyleBackColor = true;
             this.deleteSelectedBackups.Click += new System.EventHandler(this.deleteSelectedBackups_Click);
             // 
@@ -65,29 +57,9 @@
             this.removeSelectedBackup.Name = "removeSelectedBackup";
             this.removeSelectedBackup.Size = new System.Drawing.Size(180, 23);
             this.removeSelectedBackup.TabIndex = 2;
-            this.removeSelectedBackup.Text = "Restore Checked Backup";
+            this.removeSelectedBackup.Text = "Restore Selected Backup";
             this.removeSelectedBackup.UseVisualStyleBackColor = true;
             this.removeSelectedBackup.Click += new System.EventHandler(this.restoreSelectedBackup);
-            // 
-            // selectAll
-            // 
-            this.selectAll.Location = new System.Drawing.Point(12, 482);
-            this.selectAll.Name = "selectAll";
-            this.selectAll.Size = new System.Drawing.Size(83, 23);
-            this.selectAll.TabIndex = 3;
-            this.selectAll.Text = "Check All";
-            this.selectAll.UseVisualStyleBackColor = true;
-            this.selectAll.Click += new System.EventHandler(this.selectAll_Click);
-            // 
-            // deselectAll
-            // 
-            this.deselectAll.Location = new System.Drawing.Point(101, 482);
-            this.deselectAll.Name = "deselectAll";
-            this.deselectAll.Size = new System.Drawing.Size(83, 23);
-            this.deselectAll.TabIndex = 4;
-            this.deselectAll.Text = "Un-Check All";
-            this.deselectAll.UseVisualStyleBackColor = true;
-            this.deselectAll.Click += new System.EventHandler(this.deselectAll_Click);
             // 
             // levelList
             // 
@@ -134,21 +106,44 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Level";
             // 
+            // backupList
+            // 
+            this.backupList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.backupNames,
+            this.backupDates});
+            this.backupList.FullRowSelect = true;
+            this.backupList.GridLines = true;
+            this.backupList.HideSelection = false;
+            this.backupList.Location = new System.Drawing.Point(12, 52);
+            this.backupList.Name = "backupList";
+            this.backupList.Size = new System.Drawing.Size(878, 424);
+            this.backupList.TabIndex = 10;
+            this.backupList.UseCompatibleStateImageBehavior = false;
+            this.backupList.View = System.Windows.Forms.View.Details;
+            // 
+            // backupNames
+            // 
+            this.backupNames.Text = "Name";
+            this.backupNames.Width = 576;
+            // 
+            // backupDates
+            // 
+            this.backupDates.Text = "Date";
+            this.backupDates.Width = 298;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(903, 514);
+            this.Controls.Add(this.backupList);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.saveBackup);
             this.Controls.Add(this.backupName);
             this.Controls.Add(this.levelList);
-            this.Controls.Add(this.deselectAll);
-            this.Controls.Add(this.selectAll);
             this.Controls.Add(this.removeSelectedBackup);
             this.Controls.Add(this.deleteSelectedBackups);
-            this.Controls.Add(this.saveList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -161,17 +156,16 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckedListBox saveList;
         private System.Windows.Forms.Button deleteSelectedBackups;
         private System.Windows.Forms.Button removeSelectedBackup;
-        private System.Windows.Forms.Button selectAll;
-        private System.Windows.Forms.Button deselectAll;
         private System.Windows.Forms.ComboBox levelList;
         private System.Windows.Forms.TextBox backupName;
         private System.Windows.Forms.Button saveBackup;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListView backupList;
+        private System.Windows.Forms.ColumnHeader backupNames;
+        private System.Windows.Forms.ColumnHeader backupDates;
     }
 }
 

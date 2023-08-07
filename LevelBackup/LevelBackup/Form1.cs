@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LevelBackup
 {
@@ -29,22 +30,13 @@ namespace LevelBackup
             levelList.SelectedIndex = 0;
 
             RefreshList();
-
-            // Backups are not complete copies of the level.
-            // When you make a backup, it generates hashes for all files in the level.
-            // Check to see if those hashes are the same as the vanilla base.
-            // If they are not the same as the vanilla base, check to see if they are in any other backups.
-            // If they are not in any other backups and differ from vanilla, we should save the file.
-            // The backup then becomes a list of hashes that point to the saved modified files.
-            // When a backup is deleted, we check that the hashes within the backup are not used by any other backups.
-            // If they're not, we can delete the saved modified file.
         }
 
         private void RefreshList()
         {
-            saveList.Items.Clear();
+            backupList.Items.Clear();
             for (int i = 0; i < level.Backups.Count; i++)
-                saveList.Items.Add(level.Backups[i].Name);
+                backupList.Items.Add(new ListViewItem(new string[] { level.Backups[i].Name, level.Backups[i].Date }));
         }
 
         private void levelList_SelectedIndexChanged(object sender, EventArgs e)
@@ -59,29 +51,39 @@ namespace LevelBackup
             RefreshList();
         }
 
-        /* Select/de-select all items in the save list */
-        private void selectAll_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < saveList.Items.Count; i++)
-                saveList.SetItemChecked(i, true);
-        }
-        private void deselectAll_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < saveList.Items.Count; i++)
-                saveList.SetItemChecked(i, false);
-        }
-
         /* Restore the selected backup for the selected level */
         private void restoreSelectedBackup(object sender, EventArgs e)
         {
+            if (backupList.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("Please select one backup from the list to restore.", "None or multiple selected!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            if (MessageBox.Show("Is Alien: Isolation closed?\nAre all mod tools are closed?", "About to restore...", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                if (level.RestoreBackup(level.Backups[backupList.SelectedItems[0].Index].ID))
+                {
+                    MessageBox.Show("Backup successfully restored!", "Restored backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Failed to restore backup!\nPlease close anything that may be using the files within the level, and try again.", "Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         /* Delete the selected backups for the selected level */
         private void deleteSelectedBackups_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < saveList.CheckedItems.Count; i++)
-                level.DeleteBackup(saveList.CheckedItems[i].ToString());
+            if (backupList.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a backup from the list to delete.", "None selected!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            for (int i = 0; i < backupList.SelectedItems.Count; i++)
+                level.DeleteBackup(level.Backups[backupList.SelectedItems[i].Index].ID);
             RefreshList();
         }
     }

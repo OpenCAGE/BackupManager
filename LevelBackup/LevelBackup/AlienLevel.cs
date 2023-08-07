@@ -15,12 +15,16 @@ namespace LevelBackup
         public List<AlienBackup> Backups = new List<AlienBackup>();
         private List<AlienFile> Files = new List<AlienFile>();
 
+        //TODO: change this to write the contents out to external files so we don't have to load everything every time 
+
         private string LevelFolder;
         private string BackupFile;
 
+        private int Version = 1;
+
         public AlienLevel(string level)
         {
-            LevelFolder = SettingsManager.GetString("PATH_GameRoot") + "/DATA/ENV/PRODUCTION/" + level + "/";
+            LevelFolder = SettingsManager.GetString("PATH_GameRoot") + "/DATA/ENV/PRODUCTION/" + level;
             BackupFile = SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS/" + level + ".BAK";
 
             Load();
@@ -29,12 +33,12 @@ namespace LevelBackup
         /* Create a new backup */
         public void CreateBackup(string name)
         {
-            AlienBackup Backup = new AlienBackup() { Name = name, Date = DateTime.Now.ToString("dd-MM-yy"), GUIDs = new List<string>() };
+            AlienBackup Backup = new AlienBackup() { Name = name, Date = DateTime.Now.ToString("dd-MM-yy HH:mm:ss"), ID = DateTimeOffset.UtcNow.ToUnixTimeSeconds(), GUIDs = new List<string>() };
 
             string[] files = Directory.GetFiles(LevelFolder, "*.*", SearchOption.AllDirectories);
             for (int i = 0; i < files.Length; i++)
             {
-                string fileName = files[i].Substring(LevelFolder.Length);
+                string fileName = files[i].Substring(LevelFolder.Length + 1);
                 string fileHash = GenerateFileHash(files[i]);
 
                 AlienFile file = Files.FirstOrDefault(o => o.Name == fileName);
@@ -58,12 +62,113 @@ namespace LevelBackup
             Save();
         }
 
-        /* Delete an existing backup */
-        public void DeleteBackup(string name)
+        /* Restore a backup */
+        public bool RestoreBackup(Int64 ID)
         {
-            Backups.Remove(Backups.FirstOrDefault(o => o.Name == name));
+            AlienBackup backup = Backups.FirstOrDefault(o => o.ID == ID);
+            if (backup == null) return false;
 
-            //TODO: currently this is NOT working. it deletes all files?
+            //First, try keep a version of the current folder
+            try
+            {
+                if (Directory.Exists(LevelFolder + "_COPY"))
+                    Directory.Delete(LevelFolder + "_COPY", true);
+                CopyDirectory(LevelFolder, LevelFolder + "_COPY", true);
+            }
+            catch
+            {
+                return false;
+            }
+
+            //Now, try clear the current folder
+            try
+            {
+                Directory.Delete(LevelFolder, true);
+                Directory.CreateDirectory(LevelFolder);
+            }
+            catch
+            {
+                try
+                {
+                    Directory.Delete(LevelFolder + "_COPY", true);
+                }
+                catch
+                {
+                    return false;
+                }
+                return false;
+            }
+
+            //Restore the backup
+            try
+            {
+                for (int i = 0; i < Files.Count; i++)
+                {
+                    for (int x = 0; x < Files[i].Revisions.Count; x++)
+                    {
+                        for (int z = 0; z < backup.GUIDs.Count; z++)
+                        {
+                            if (Files[i].Revisions[x].GUID == backup.GUIDs[z])
+                            {
+                                Directory.CreateDirectory(LevelFolder + "/" + Files[i].Name.Substring(0, Files[i].Name.Length - Path.GetFileName(Files[i].Name).Length));
+                                File.WriteAllBytes(LevelFolder + "/" + Files[i].Name, Files[i].Revisions[x].Content);
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                try
+                {
+                    Directory.Delete(LevelFolder + "_COPY", true);
+                }
+                catch
+                {
+                    return false;
+                }
+                return false;
+            }
+
+            //Clear the copy
+            try
+            {
+                Directory.Delete(LevelFolder + "_COPY", true);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+        private void CopyDirectory(string sourceDir, string destinationDir, bool recursive)
+        {
+            var dir = new DirectoryInfo(sourceDir);
+            if (!dir.Exists) throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            Directory.CreateDirectory(destinationDir);
+
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                string targetFilePath = Path.Combine(destinationDir, file.Name);
+                file.CopyTo(targetFilePath);
+            }
+
+            if (recursive)
+            {
+                foreach (DirectoryInfo subDir in dirs)
+                {
+                    string newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                    CopyDirectory(subDir.FullName, newDestinationDir, true);
+                }
+            }
+        }
+
+        /* Delete an existing backup */
+        public void DeleteBackup(Int64 ID)
+        {
+            Backups.Remove(Backups.FirstOrDefault(o => o.ID == ID));
 
             List<AlienFile> trimmedFiles = new List<AlienFile>();
             for (int i = 0; i < Files.Count; i++)
@@ -99,10 +204,15 @@ namespace LevelBackup
 
             using (BinaryReader reader = new BinaryReader(File.OpenRead(BackupFile)))
             {
+                if (reader.ReadInt32() != Version)
+                {
+                    throw new Exception("Backup version mismatch");
+                }
+
                 int backupCount = reader.ReadInt32();
                 for (int i = 0; i < backupCount; i++)
                 {
-                    AlienBackup backup = new AlienBackup() { Name = reader.ReadString(), Date = reader.ReadString(), GUIDs = new List<string>() };
+                    AlienBackup backup = new AlienBackup() { Name = reader.ReadString(), Date = reader.ReadString(), ID = reader.ReadInt64(), GUIDs = new List<string>() };
                     int guidCount = reader.ReadInt32();
                     for (int x = 0; x < guidCount; x++)
                     {
@@ -133,12 +243,14 @@ namespace LevelBackup
             using (BinaryWriter writer = new BinaryWriter(File.OpenWrite(BackupFile)))
             {
                 writer.BaseStream.SetLength(0);
+                writer.Write(Version);
 
                 writer.Write(Backups.Count);
                 for (int i = 0; i < Backups.Count; i ++)
                 {
                     writer.Write(Backups[i].Name);
                     writer.Write(Backups[i].Date);
+                    writer.Write(Backups[i].ID);
                     writer.Write(Backups[i].GUIDs.Count);
                     for (int x = 0; x < Backups[i].GUIDs.Count; x++)
                     {
@@ -176,6 +288,7 @@ namespace LevelBackup
         {
             public string Name;
             public string Date;
+            public Int64 ID;
             public List<string> GUIDs;
         }
 
