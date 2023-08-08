@@ -309,10 +309,20 @@ namespace LevelBackup
         {
             string hash = "";
             {
-                byte[] contentBytes = File.ReadAllBytes(path);
+                MemoryStream stream = new MemoryStream();
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    byte[] bytes = File.ReadAllBytes(path);
+                    writer.Write(bytes);
+
+                    char[] pathC = path.ToCharArray();
+                    for (int i = 0; i < pathC.Length; i++)
+                        writer.Write(BitConverter.GetBytes(pathC[i]));
+                }
+                byte[] content = stream.ToArray();
 
                 MD5 md5 = MD5.Create();
-                md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
+                md5.TransformBlock(content, 0, content.Length, content, 0);
                 md5.TransformFinalBlock(new byte[0], 0, 0);
                 hash = BitConverter.ToString(md5.Hash);
             }
