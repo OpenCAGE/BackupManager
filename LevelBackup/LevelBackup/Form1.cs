@@ -24,6 +24,11 @@ namespace LevelBackup
         {
             InitializeComponent();
 
+            if (!Directory.Exists(SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS"))
+            {
+                MessageBox.Show("Welcome to the OpenCAGE Level Backup Manager! It is recommended to create a backup of all levels when they are in an unmodified state, to be able to revert back to later.", "Welcome!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
             levelList.Items.AddRange(Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray());
             levelList.SelectedIndex = 0;
 
@@ -87,6 +92,31 @@ namespace LevelBackup
             this.Cursor = Cursors.WaitCursor;
             for (int i = 0; i < backupList.SelectedItems.Count; i++)
                 level.DeleteBackup(level.Backups[backupList.SelectedItems[i].Index].ID);
+            RefreshList();
+            this.Cursor = Cursors.Default;
+        }
+
+        /* Backup every level as they stand right now! */
+        private void backupAllNow_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This will take some time!\nPlease do not close the tool.", "Notice!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            this.Cursor = Cursors.WaitCursor;
+
+            List<string> levels = Level.GetLevels(SettingsManager.GetString("PATH_GameRoot"));
+            //Parallel.ForEach(levels, (levelName) =>
+            //{
+            //    AlienLevel lvl = new AlienLevel(levelName);
+            //    lvl.CreateBackup(lvl.Backups.Count == 0 ? "First backup" : "Automated backup across all levels");
+            //});
+            //Doing this in parallel requires so much RAM I don't think it's really feasible for most modders that use these tools.
+            foreach (string levelName in levels)
+            {
+                AlienLevel lvl = new AlienLevel(levelName);
+                lvl.CreateBackup(lvl.Backups.Count == 0 ? "First backup" : "Automated backup across all levels");
+            }
+
+            level = new AlienLevel(levelList.SelectedItem.ToString());
             RefreshList();
             this.Cursor = Cursors.Default;
         }
