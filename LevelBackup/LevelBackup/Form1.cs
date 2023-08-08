@@ -35,19 +35,26 @@ namespace LevelBackup
             RefreshList();
         }
 
+        /* Populate the UI for all backups in the selected level */
         private void RefreshList()
         {
             backupList.Items.Clear();
             for (int i = 0; i < level.Backups.Count; i++)
-                backupList.Items.Add(new ListViewItem(new string[] { level.Backups[i].Name, level.Backups[i].Date }));
+            {
+                int changeCount = i == 0 ? level.Backups[i].GUIDs.Count : level.CalculateDiff(level.Backups[i - 1], level.Backups[i]);
+                backupList.Items.Add(new ListViewItem(new string[] { level.Backups[i].Name, level.Backups[i].Date, changeCount + " Files Modified" }));
+            }
+            backupLabel.Text = "Create Backup (" + level.CalculateDiff(level.Backups.Count == 0 ? null : level.Backups[level.Backups.Count - 1]) + " Changes)";
         }
 
+        /* Select a new level */
         private void levelList_SelectedIndexChanged(object sender, EventArgs e)
         {
             level = new AlienLevel(levelList.SelectedItem.ToString());
             RefreshList();
         }
 
+        /* Create a backup of the currently selected level */
         private void saveBackup_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
@@ -70,6 +77,7 @@ namespace LevelBackup
             {
                 if (level.RestoreBackup(level.Backups[backupList.SelectedItems[0].Index].ID))
                 {
+                    RefreshList();
                     MessageBox.Show("Backup successfully restored!", "Restored backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else

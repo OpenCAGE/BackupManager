@@ -34,12 +34,13 @@
             this.levelList = new System.Windows.Forms.ComboBox();
             this.backupName = new System.Windows.Forms.TextBox();
             this.saveBackup = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.backupLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.backupList = new System.Windows.Forms.ListView();
             this.backupNames = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.backupDates = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.backupAllNow = new System.Windows.Forms.Button();
+            this.backupContents = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // deleteSelectedBackups
@@ -89,14 +90,14 @@
             this.saveBackup.UseVisualStyleBackColor = true;
             this.saveBackup.Click += new System.EventHandler(this.saveBackup_Click);
             // 
-            // label1
+            // backupLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(502, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Backup Name";
+            this.backupLabel.AutoSize = true;
+            this.backupLabel.Location = new System.Drawing.Point(502, 9);
+            this.backupLabel.Name = "backupLabel";
+            this.backupLabel.Size = new System.Drawing.Size(78, 13);
+            this.backupLabel.TabIndex = 8;
+            this.backupLabel.Text = "Create Backup";
             // 
             // label2
             // 
@@ -111,7 +112,8 @@
             // 
             this.backupList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.backupNames,
-            this.backupDates});
+            this.backupDates,
+            this.backupContents});
             this.backupList.FullRowSelect = true;
             this.backupList.GridLines = true;
             this.backupList.HideSelection = false;
@@ -125,12 +127,12 @@
             // backupNames
             // 
             this.backupNames.Text = "Name";
-            this.backupNames.Width = 576;
+            this.backupNames.Width = 472;
             // 
             // backupDates
             // 
             this.backupDates.Text = "Date";
-            this.backupDates.Width = 298;
+            this.backupDates.Width = 190;
             // 
             // backupAllNow
             // 
@@ -142,6 +144,11 @@
             this.backupAllNow.UseVisualStyleBackColor = true;
             this.backupAllNow.Click += new System.EventHandler(this.backupAllNow_Click);
             // 
+            // backupContents
+            // 
+            this.backupContents.Text = "Details";
+            this.backupContents.Width = 211;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -150,7 +157,7 @@
             this.Controls.Add(this.backupAllNow);
             this.Controls.Add(this.backupList);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.backupLabel);
             this.Controls.Add(this.saveBackup);
             this.Controls.Add(this.backupName);
             this.Controls.Add(this.levelList);
@@ -173,12 +180,13 @@
         private System.Windows.Forms.ComboBox levelList;
         private System.Windows.Forms.TextBox backupName;
         private System.Windows.Forms.Button saveBackup;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label backupLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListView backupList;
         private System.Windows.Forms.ColumnHeader backupNames;
         private System.Windows.Forms.ColumnHeader backupDates;
         private System.Windows.Forms.Button backupAllNow;
+        private System.Windows.Forms.ColumnHeader backupContents;
     }
 }
 
