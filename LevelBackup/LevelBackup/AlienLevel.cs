@@ -309,17 +309,7 @@ namespace LevelBackup
         {
             string hash = "";
             {
-                MemoryStream stream = new MemoryStream();
-                using (BinaryWriter writer = new BinaryWriter(stream))
-                {
-                    byte[] bytes = File.ReadAllBytes(path);
-                    writer.Write(bytes);
-
-                    char[] pathC = path.ToCharArray();
-                    for (int i = 0; i < pathC.Length; i++)
-                        writer.Write(BitConverter.GetBytes(pathC[i]));
-                }
-                byte[] content = stream.ToArray();
+                byte[] content = File.ReadAllBytes(path);
 
                 MD5 md5 = MD5.Create();
                 md5.TransformBlock(content, 0, content.Length, content, 0);
