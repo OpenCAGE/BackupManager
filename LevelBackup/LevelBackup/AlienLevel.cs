@@ -7,6 +7,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms.Design;
 using OpenCAGE;
+using System.Xml.Linq;
 
 namespace LevelBackup
 {
@@ -54,10 +55,9 @@ namespace LevelBackup
 
                 string revisionFile = BackupFolder + "/" + fileHash;
                 if (!File.Exists(revisionFile))
-                {
                     File.WriteAllBytes(revisionFile, File.ReadAllBytes(files[i]));
+                if (!file.Revisions.Contains(fileHash))
                     file.Revisions.Add(fileHash);
-                }
 
                 Backup.GUIDs.Add(fileHash);
             }
@@ -206,6 +206,32 @@ namespace LevelBackup
             Save();
         }
 
+        /* Get the number of files changed between backups - leave 2nd arg null to calculate current state */
+        public int CalculateDiff(AlienBackup orig, AlienBackup mod = null)
+        {
+            string[] GUIDs = mod?.GUIDs?.ToArray();
+            if (mod == null)
+            {
+                string[] files = Directory.GetFiles(LevelFolder, "*.*", SearchOption.AllDirectories);
+                GUIDs = new string[files.Length];
+                Parallel.For(0, files.Length, (i) =>
+                {
+                    GUIDs[i] = GenerateFileHash(files[i]);
+                });
+            }
+            if (orig == null) return GUIDs.Length;
+
+            int changes = 0;
+            for (int i = 0; i < GUIDs.Length; i++)
+            {
+                if (!orig.GUIDs.Contains(GUIDs[i]))
+                    changes++;
+            }
+            changes += Math.Abs(GUIDs.Length - orig.GUIDs.Count);
+            return changes;
+        }
+
+
         /* Load the backup archive into memory */
         private void Load()
         {
@@ -281,11 +307,16 @@ namespace LevelBackup
         /* Generate a hash for a given file */
         private string GenerateFileHash(string path)
         {
-            MD5 md5 = MD5.Create();
-            byte[] contentBytes = File.ReadAllBytes(path);
-            md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
-            md5.TransformFinalBlock(new byte[0], 0, 0);
-            return BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
+            string hash = "";
+            {
+                byte[] content = File.ReadAllBytes(path);
+
+                MD5 md5 = MD5.Create();
+                md5.TransformBlock(content, 0, content.Length, content, 0);
+                md5.TransformFinalBlock(new byte[0], 0, 0);
+                hash = BitConverter.ToString(md5.Hash);
+            }
+            return hash.Replace("-", "").ToLower();
         }
 
 

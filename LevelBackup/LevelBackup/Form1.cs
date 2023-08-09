@@ -24,25 +24,37 @@ namespace LevelBackup
         {
             InitializeComponent();
 
+            if (!Directory.Exists(SettingsManager.GetString("PATH_GameRoot") + "/DATA/MODTOOLS/BACKUPS"))
+            {
+                MessageBox.Show("Welcome to the OpenCAGE Level Backup Manager! It is recommended to create a backup of all levels when they are in an unmodified state, to be able to revert back to later.", "Welcome!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
             levelList.Items.AddRange(Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray());
             levelList.SelectedIndex = 0;
 
             RefreshList();
         }
 
+        /* Populate the UI for all backups in the selected level */
         private void RefreshList()
         {
             backupList.Items.Clear();
             for (int i = 0; i < level.Backups.Count; i++)
-                backupList.Items.Add(new ListViewItem(new string[] { level.Backups[i].Name, level.Backups[i].Date }));
+            {
+                int changeCount = i == 0 ? level.Backups[i].GUIDs.Count : level.CalculateDiff(level.Backups[i - 1], level.Backups[i]);
+                backupList.Items.Add(new ListViewItem(new string[] { level.Backups[i].Name, level.Backups[i].Date, changeCount + " Files Modified" }));
+            }
+            backupLabel.Text = "Create Backup (" + level.CalculateDiff(level.Backups.Count == 0 ? null : level.Backups[level.Backups.Count - 1]) + " Changes)";
         }
 
+        /* Select a new level */
         private void levelList_SelectedIndexChanged(object sender, EventArgs e)
         {
             level = new AlienLevel(levelList.SelectedItem.ToString());
             RefreshList();
         }
 
+        /* Create a backup of the currently selected level */
         private void saveBackup_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
@@ -65,6 +77,7 @@ namespace LevelBackup
             {
                 if (level.RestoreBackup(level.Backups[backupList.SelectedItems[0].Index].ID))
                 {
+                    RefreshList();
                     MessageBox.Show("Backup successfully restored!", "Restored backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -87,6 +100,31 @@ namespace LevelBackup
             this.Cursor = Cursors.WaitCursor;
             for (int i = 0; i < backupList.SelectedItems.Count; i++)
                 level.DeleteBackup(level.Backups[backupList.SelectedItems[i].Index].ID);
+            RefreshList();
+            this.Cursor = Cursors.Default;
+        }
+
+        /* Backup every level as they stand right now! */
+        private void backupAllNow_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This will take some time!\nPlease do not close the tool.", "Notice!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            this.Cursor = Cursors.WaitCursor;
+
+            List<string> levels = Level.GetLevels(SettingsManager.GetString("PATH_GameRoot"));
+            //Parallel.ForEach(levels, (levelName) =>
+            //{
+            //    AlienLevel lvl = new AlienLevel(levelName);
+            //    lvl.CreateBackup(lvl.Backups.Count == 0 ? "First backup" : "Automated backup across all levels");
+            //});
+            //Doing this in parallel requires so much RAM I don't think it's really feasible for most modders that use these tools.
+            foreach (string levelName in levels)
+            {
+                AlienLevel lvl = new AlienLevel(levelName);
+                lvl.CreateBackup(lvl.Backups.Count == 0 ? "First backup" : "Automated backup across all levels");
+            }
+
+            level = new AlienLevel(levelList.SelectedItem.ToString());
             RefreshList();
             this.Cursor = Cursors.Default;
         }
