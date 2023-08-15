@@ -20,7 +20,7 @@ namespace LevelBackup
     {
         AlienLevel level = null;
 
-        public Form1()
+        public Form1(string level = null)
         {
             InitializeComponent();
 
@@ -30,7 +30,10 @@ namespace LevelBackup
             }
 
             levelList.Items.AddRange(Level.GetLevels(SettingsManager.GetString("PATH_GameRoot")).ToArray());
-            levelList.SelectedIndex = 0;
+            if (level == null)
+                levelList.SelectedIndex = 0;
+            else
+                levelList.SelectedItem = level;
 
             RefreshList();
         }
