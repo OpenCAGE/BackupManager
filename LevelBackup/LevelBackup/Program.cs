@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -59,7 +59,8 @@ namespace LevelBackup
             //Run app
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(GetArgument("level")));
+            if (GetArgument("level") == null) Application.Run(new Landing());
+            else Application.Run(new Form1(GetArgument("level")));
         }
 
         public static string GetArgument(string name)

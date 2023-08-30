@@ -1,3 +1,3 @@
-# Alien Isolation Level Backup
+# Alien Isolation Backup Manager
 
-A tool to backup levels in Alien Isolation, and manage those backups.
+A tool to backup levels and files in Alien Isolation, and manage those backups.

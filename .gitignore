@@ -365,3 +365,4 @@ FodyWeavers.xsd
 !Build/
 Build/*.xml
 Build/*.pdb
+Build/*.config
