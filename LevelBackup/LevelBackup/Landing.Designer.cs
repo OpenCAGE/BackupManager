@@ -53,7 +53,7 @@
             this.MaximizeBox = false;
             this.Name = "Landing";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "OpenCAGE Behaviour Tree Editor";
+            this.Text = "OpenCAGE Backup Manager";
             this.Load += new System.EventHandler(this.BehaviourPacker_Load);
             this.ResumeLayout(false);
 
