@@ -66,12 +66,31 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlienLevel.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include=".ayz Pack Tools\AlienModPack.cs" />
+    <Compile Include=".ayz Pack Tools\Filemanager_ExportMod.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include=".ayz Pack Tools\Filemanager_ExportMod.Designer.cs">
+      <DependentUpon>Filemanager_ExportMod.cs</DependentUpon>
+    </Compile>
+    <Compile Include=".ayz Pack Tools\Filemanager_ImportMod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include=".ayz Pack Tools\Filemanager_ImportMod.Designer.cs">
+      <DependentUpon>Filemanager_ImportMod.cs</DependentUpon>
+    </Compile>
+    <Compile Include=".ayz Pack Tools\Filemanager_ResetMod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include=".ayz Pack Tools\Filemanager_ResetMod.Designer.cs">
+      <DependentUpon>Filemanager_ResetMod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AlienLevel.cs" />
+    <Compile Include="LevelBackupManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LevelBackupManager.designer.cs">
+      <DependentUpon>LevelBackupManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Landing.cs">
       <SubType>Form</SubType>
@@ -85,8 +104,17 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsManager.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include=".ayz Pack Tools\Filemanager_ExportMod.resx">
+      <DependentUpon>Filemanager_ExportMod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include=".ayz Pack Tools\Filemanager_ImportMod.resx">
+      <DependentUpon>Filemanager_ImportMod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include=".ayz Pack Tools\Filemanager_ResetMod.resx">
+      <DependentUpon>Filemanager_ResetMod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LevelBackupManager.resx">
+      <DependentUpon>LevelBackupManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Landing.resx">
       <DependentUpon>Landing.cs</DependentUpon>
@@ -96,6 +124,89 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\ALIENCONFIGS.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\BACKSTAGEALERT.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\BACKSTAGEHOLD.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\BACKSTAGEHOLD_MILD.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\BACKSTAGEHOLD_VCLOSE.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\BACSTAGEHOLD_CLOSE.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\CANTEEN.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\CREWEXPENDABLE_VENT.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\DEFAULT.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\INTENSE.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\MILD.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\MODERATE.BML" />
+    <EmbeddedResource Include="Reset Files\ALIENCONFIGS\MODERATELY_INTENSE.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\ALIEN.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\ANDROID.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\ANDROID_HEAVY.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\ATTRIBUTES.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\BASE_HUMAN.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\CIVILIAN.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\CUTSCENE.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\CUTSCENE_ANDROID.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\DEFAULTS.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\FACEHUGGER.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\INNOCENT.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\MELEE_HUMAN.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\RIOT_GUARD.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\SECURITY_GUARD.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\SPACESUIT_NPC.BML" />
+    <EmbeddedResource Include="Reset Files\CHR_INFO\ATTRIBUTES\THE_PLAYER.BML" />
+    <EmbeddedResource Include="Reset Files\DIFFICULTYSETTINGS\DIFFICULTYSETTINGS.BML" />
+    <EmbeddedResource Include="Reset Files\DIFFICULTYSETTINGS\EASY.BML" />
+    <EmbeddedResource Include="Reset Files\DIFFICULTYSETTINGS\HARD.BML" />
+    <EmbeddedResource Include="Reset Files\DIFFICULTYSETTINGS\IRON.BML" />
+    <EmbeddedResource Include="Reset Files\DIFFICULTYSETTINGS\MEDIUM.BML" />
+    <EmbeddedResource Include="Reset Files\DIFFICULTYSETTINGS\NOVICE.BML" />
+    <EmbeddedResource Include="Reset Files\GBL_ITEM.BML" />
+    <EmbeddedResource Include="Reset Files\VIEW_CONE_SETS\VIEWCONESETS.BML" />
+    <EmbeddedResource Include="Reset Files\VIEW_CONE_SETS\VIEWCONESET_ANDROID.BML" />
+    <EmbeddedResource Include="Reset Files\VIEW_CONE_SETS\VIEWCONESET_HUMAN.BML" />
+    <EmbeddedResource Include="Reset Files\VIEW_CONE_SETS\VIEWCONESET_HUMAN_HEIGHTENED.BML" />
+    <EmbeddedResource Include="Reset Files\VIEW_CONE_SETS\VIEWCONESET_NONE.BML" />
+    <EmbeddedResource Include="Reset Files\VIEW_CONE_SETS\VIEWCONESET_SLEEPING.BML" />
+    <EmbeddedResource Include="Reset Files\VIEW_CONE_SETS\VIEWCONESET_STANDARD.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\ACID_BURST_LARGE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\ACID_BURST_SMALL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\AMMOTYPES.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\BOLTGUN_NORMAL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\CATALYST_FIRE_LARGE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\CATALYST_FIRE_SMALL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\CATALYST_HE_LARGE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\CATALYST_HE_SMALL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\CATTLEPROD_POWERPACK.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\EMP_BURST_LARGE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\EMP_BURST_LARGE_TIER2.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\EMP_BURST_LARGE_TIER3.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\EMP_BURST_SMALL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\ENVIRONMENT_FLAME.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\FLAMETHROWER_AERATED.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\FLAMETHROWER_HIGH_DAMAGE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\FLAMETHROWER_NORMAL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_FIRE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_FIRE_TIER2.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_FIRE_TIER3.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_HE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_HE_TIER2.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_HE_TIER3.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_SMOKE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_STUN.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_STUN_TIER2.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\GRENADE_STUN_TIER3.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\IMPACT.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\MELEE_CROW_AXE.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\PISTOL_DUM_DUM.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\PISTOL_NORMAL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\PISTOL_NORMAL_NPC.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\PISTOL_TAZER.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\PUSH.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\SHOTGUN_INCENDIARY.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\SHOTGUN_NORMAL.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\SHOTGUN_NORMAL_NPC.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\SHOTGUN_SLUG.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\SMG_DUM_DUM.BML" />
+    <EmbeddedResource Include="Reset Files\WEAPON_INFO\AMMO\SMG_NORMAL.BML" />
     <Resource Include="Fonts\Isolation_Isolation.ttf" />
     <Resource Include="Fonts\JixellationBold_Jixellation.ttf" />
     <None Include="packages.config" />
@@ -120,6 +231,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <EmbeddedResource Include="Reset Files\ENGINE_SETTINGS.XML" />
+    <EmbeddedResource Include="Reset Files\GBL_ITEM.XML" />
+    <EmbeddedResource Include="Reset Files\HAIR_SHADING_SETTINGS.TXT" />
+    <EmbeddedResource Include="Reset Files\RADIOSITY_SETTINGS.TXT" />
+    <EmbeddedResource Include="Reset Files\SKIN_SHADING_SETTINGS.TXT" />
     <Resource Include="Images\lambert-bg.jpg" />
   </ItemGroup>
   <ItemGroup>

@@ -60,7 +60,7 @@ namespace LevelBackup
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (GetArgument("level") == null) Application.Run(new Landing());
-            else Application.Run(new Form1(GetArgument("level")));
+            else Application.Run(new LevelBackupManager(GetArgument("level")));
         }
 
         public static string GetArgument(string name)

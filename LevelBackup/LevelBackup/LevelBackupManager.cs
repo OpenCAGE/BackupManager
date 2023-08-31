@@ -1,26 +1,17 @@
 using CathodeLib;
-using Newtonsoft.Json.Linq;
 using OpenCAGE;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LevelBackup
 {
-    public partial class Form1 : Form
+    public partial class LevelBackupManager : Form
     {
         AlienLevel level = null;
 
-        public Form1(string level = null)
+        public LevelBackupManager(string level = null)
         {
             InitializeComponent();
 

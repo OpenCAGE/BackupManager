@@ -28,19 +28,23 @@ namespace LevelBackup
 
         private void ManageLevels()
         {
-            Form1 dialog = new Form1();
+            LevelBackupManager dialog = new LevelBackupManager();
             dialog.Show();
             dialog.FormClosed += Dialog_FormClosed;
             this.Hide();
         }
-        private void Dialog_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            this.Show();
-        }
 
         private void ManageConfigs()
         {
+            Filemanager_ResetMod dialog = new Filemanager_ResetMod();
+            dialog.Show();
+            dialog.FormClosed += Dialog_FormClosed;
+            this.Hide();
+        }
 
+        private void Dialog_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Show();
         }
 
         private void ManageBehaviours()

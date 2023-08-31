@@ -53,14 +53,12 @@
 
     <Grid Width="1326" Height="528">
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="65 0" Width="700">
-            <Button Style="{StaticResource TextButton}" Click="ManageLevels" ToolTip="Open the behaviour tree editor">
+            <Button Style="{StaticResource TextButton}" Click="ManageLevels" ToolTip="Create, manage, and restore backups for individual levels">
                 Level Backups
             </Button>
-            <!--
-            <Button Style="{StaticResource TextButton}" Click="ManageConfigs" ToolTip="Compile behaviour tree changes and import them into the game">
+            <Button Style="{StaticResource TextButton}" Click="ManageConfigs" ToolTip="Reset changes made to files through the config editor">
                 Reset Configs
             </Button>
-            -->
             <Button Style="{StaticResource TextButton}" Click="ManageBehaviours" ToolTip="Reset all changes made to behaviour trees">
                 Reset Behaviours
             </Button>

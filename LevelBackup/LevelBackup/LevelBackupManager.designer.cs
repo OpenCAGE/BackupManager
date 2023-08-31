@@ -1,6 +1,6 @@
 ﻿namespace LevelBackup
 {
-    partial class Form1
+    partial class LevelBackupManager
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LevelBackupManager));
             this.deleteSelectedBackups = new System.Windows.Forms.Button();
             this.removeSelectedBackup = new System.Windows.Forms.Button();
             this.levelList = new System.Windows.Forms.ComboBox();
