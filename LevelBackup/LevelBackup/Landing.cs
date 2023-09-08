@@ -24,6 +24,7 @@ namespace LevelBackup
             wpf.OnManageLevels += ManageLevels;
             wpf.OnManageConfigs += ManageConfigs;
             wpf.OnManageBehaviours += ManageBehaviours;
+            wpf.OnLoadLegacyMod += LoadLegacyMod;
         }
 
         private void ManageLevels()
@@ -37,6 +38,14 @@ namespace LevelBackup
         private void ManageConfigs()
         {
             Filemanager_ResetMod dialog = new Filemanager_ResetMod();
+            dialog.Show();
+            dialog.FormClosed += Dialog_FormClosed;
+            this.Hide();
+        }
+
+        private void LoadLegacyMod()
+        {
+            Filemanager_ImportMod dialog = new Filemanager_ImportMod();
             dialog.Show();
             dialog.FormClosed += Dialog_FormClosed;
             this.Hide();

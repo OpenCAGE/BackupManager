@@ -24,6 +24,9 @@ namespace LevelBackup
         //Load all mod names on start
         private void Filemanager_ImportMod_Load(object sender, EventArgs e)
         {
+            if (!Directory.Exists(SharedData.pathToAI + "/DATA/MODS/"))
+                Directory.CreateDirectory(SharedData.pathToAI + "/DATA/MODS/");
+
             //Read in all mod names
             foreach (string directory in Directory.GetDirectories(SharedData.pathToAI + "/DATA/MODS/"))
             {
