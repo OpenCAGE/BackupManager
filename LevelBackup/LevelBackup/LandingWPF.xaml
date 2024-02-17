@@ -62,6 +62,9 @@
             <Button Style="{StaticResource TextButton}" Click="ManageBehaviours" ToolTip="Reset all changes made to behaviour trees">
                 Reset Behaviours
             </Button>
+            <Button Style="{StaticResource TextButton}" Click="LoadLegacyMod" ToolTip="Load a legacy configuration mod">
+                Load Mod
+            </Button>
         </StackPanel>
 
         <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20">

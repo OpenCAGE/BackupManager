@@ -23,6 +23,7 @@ namespace LevelBackup
         public Action OnManageLevels;
         public Action OnManageConfigs;
         public Action OnManageBehaviours;
+        public Action OnLoadLegacyMod;
 
         public LandingWPF()
         {
@@ -44,6 +45,10 @@ namespace LevelBackup
         private void ManageBehaviours(object sender, RoutedEventArgs e)
         {
             OnManageBehaviours?.Invoke();
+        }
+        private void LoadLegacyMod(object sender, RoutedEventArgs e)
+        {
+            OnLoadLegacyMod?.Invoke();
         }
     }
 }

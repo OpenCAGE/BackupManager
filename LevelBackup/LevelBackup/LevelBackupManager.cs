@@ -51,6 +51,12 @@ namespace LevelBackup
         /* Create a backup of the currently selected level */
         private void saveBackup_Click(object sender, EventArgs e)
         {
+            if (backupName.Text == "")
+            {
+                MessageBox.Show("Please enter a backup name!");
+                return;
+            }
+
             this.Cursor = Cursors.WaitCursor;
             level.CreateBackup(backupName.Text);
             RefreshList();
