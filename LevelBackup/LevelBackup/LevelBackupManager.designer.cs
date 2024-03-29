@@ -39,8 +39,8 @@
             this.backupList = new System.Windows.Forms.ListView();
             this.backupNames = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.backupDates = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.backupAllNow = new System.Windows.Forms.Button();
             this.backupContents = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.backupAllNow = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // deleteSelectedBackups
@@ -49,7 +49,7 @@
             this.deleteSelectedBackups.Name = "deleteSelectedBackups";
             this.deleteSelectedBackups.Size = new System.Drawing.Size(180, 23);
             this.deleteSelectedBackups.TabIndex = 1;
-            this.deleteSelectedBackups.Text = "Delete Selected Backup";
+            this.deleteSelectedBackups.Text = "Delete Checked Backups";
             this.deleteSelectedBackups.UseVisualStyleBackColor = true;
             this.deleteSelectedBackups.Click += new System.EventHandler(this.deleteSelectedBackups_Click);
             // 
@@ -110,6 +110,7 @@
             // 
             // backupList
             // 
+            this.backupList.CheckBoxes = true;
             this.backupList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.backupNames,
             this.backupDates,
@@ -134,6 +135,11 @@
             this.backupDates.Text = "Date";
             this.backupDates.Width = 190;
             // 
+            // backupContents
+            // 
+            this.backupContents.Text = "Details";
+            this.backupContents.Width = 211;
+            // 
             // backupAllNow
             // 
             this.backupAllNow.Location = new System.Drawing.Point(12, 482);
@@ -144,12 +150,7 @@
             this.backupAllNow.UseVisualStyleBackColor = true;
             this.backupAllNow.Click += new System.EventHandler(this.backupAllNow_Click);
             // 
-            // backupContents
-            // 
-            this.backupContents.Text = "Details";
-            this.backupContents.Width = 211;
-            // 
-            // Form1
+            // LevelBackupManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -166,7 +167,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "LevelBackupManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OpenCAGE Level Backup Manager";
             this.ResumeLayout(false);

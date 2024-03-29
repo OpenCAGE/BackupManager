@@ -91,16 +91,24 @@ namespace LevelBackup
         /* Delete the selected backups for the selected level */
         private void deleteSelectedBackups_Click(object sender, EventArgs e)
         {
-            if (backupList.SelectedItems.Count == 0)
+            if (backupList.CheckedItems.Count == 0)
             {
-                MessageBox.Show("Please select a backup from the list to delete.", "None selected!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please check at least one backup from the list to delete.", "None checked!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            if (MessageBox.Show("You are about to delete " + backupList.CheckedItems.Count + " backups. Are you sure?", "About to delete...", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
             this.Cursor = Cursors.WaitCursor;
-            for (int i = 0; i < backupList.SelectedItems.Count; i++)
-                level.DeleteBackup(level.Backups[backupList.SelectedItems[i].Index].ID);
+
+            List<AlienLevel.AlienBackup> toDelete = new List<AlienLevel.AlienBackup>();
+            for (int i = 0; i < backupList.CheckedItems.Count; i++)
+                toDelete.Add(level.Backups[backupList.CheckedItems[i].Index]);
+            for (int i = 0; i < toDelete.Count; i++)
+                level.DeleteBackup(toDelete[i].ID);
             RefreshList();
+
             this.Cursor = Cursors.Default;
         }
 
